@@ -2,13 +2,12 @@
   "compilerOptions": {
     "declaration": true,
     "importHelpers": true,
-    "module": "nodenext",
+    "module": "CommonJS",
     "outDir": "dist",
     "rootDir": "src",
     "strict": true,
-    "target": "ES2022"
+    "target": "es2022",
+    "esModuleInterop": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

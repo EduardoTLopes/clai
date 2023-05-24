@@ -29,6 +29,8 @@ export async function createPRDescription() {
   const chain = loadQARefineChain(model);
 
   const question = `Create a PR description for my Diffs,in the following format:
+    <title> </title>
+  
     [Type of change]
     
     [DESCRIPTION]

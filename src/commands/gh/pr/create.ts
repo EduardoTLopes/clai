@@ -20,9 +20,13 @@ export default class GhPrCreate extends Command {
     const { args, flags } = await this.parse(GhPrCreate);
 
     if (flags.description) {
-      const gitDiff = await getCommitDiffs();
-      const prDescription = await createPRDescription(gitDiff);
-      this.log("test");
+      try {
+        const gitDiff = await getCommitDiffs();
+        const prDescription = await createPRDescription();
+        this.log("test");
+      } catch (error: any) {
+        this.log(error);
+      }
     }
   }
 }

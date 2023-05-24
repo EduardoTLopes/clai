@@ -7,8 +7,7 @@ const execAsync = promisify(exec);
 
 export async function getCommitDiffs() {
   const { stdout } = await execAsync("git diff main...HEAD");
-  console.log({ stdout });
-  return stdout.split("\n").filter(Boolean);
+  return stdout;
 }
 
 // Path: src/utils/git/commit.ts

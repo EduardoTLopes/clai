@@ -1,22 +1,53 @@
+import "dotenv/config";
 import { OpenAI } from "langchain/llms/openai";
-import { PromptTemplate } from "langchain/prompts";
-import { LLMChain } from "langchain/chains";
+import { HNSWLib } from "langchain/vectorstores/hnswlib";
+import { MemoryVectorStore } from "langchain/vectorstores/memory";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { RetrievalQAChain, loadQARefineChain } from "langchain/chains";
+import { Document } from "langchain/document";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { getCommitDiffs } from "../git/commit-diifs";
 
-export async function createPRDescription(gitDiff: any) {
-  console.log(gitDiff);
-  const model = new OpenAI({});
-
-  const template =
-    "Please create a PR description for the following git diff {gitDiff}?";
-  const prompt = new PromptTemplate({
-    template: template,
-    inputVariables: ["gitDiff"],
+export async function createPRDescription() {
+  const embeddings = new OpenAIEmbeddings();
+  const model = new OpenAI({
+    openAIApiKey: process.env.OPENAI_API_KEY,
+    maxTokens: 1000,
   });
 
-  const chain = new LLMChain({ llm: model, prompt: prompt });
+  const commitDiffs = await getCommitDiffs();
+  const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 1000,
+  });
+  const docs = await splitter.splitDocuments([
+    new Document({
+      pageContent: commitDiffs,
+    }),
+  ]);
+  const store = await MemoryVectorStore.fromDocuments(docs, embeddings);
 
-  const res = await chain.call({ gitDiff });
+  const chain = loadQARefineChain(model);
 
-  console.log(res);
-  return res.text;
+  const question = `Create a PR description for my Diffs,in the following format:
+    [Type of change]
+    
+    [DESCRIPTION]
+
+    [Motivation and Context]
+
+    `;
+  const relevantDocs = await store.similaritySearch(question);
+
+  try {
+    console.log("res");
+    const response = await chain.call({
+      input_documents: relevantDocs,
+      question,
+    });
+    console.log({ response });
+    return response.text;
+  } catch (error: any) {
+    console.log("TEST LANGCHAIN");
+    console.log(error);
+  }
 }

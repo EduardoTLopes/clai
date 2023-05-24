@@ -39,15 +39,12 @@ export async function createPRDescription() {
   const relevantDocs = await store.similaritySearch(question);
 
   try {
-    console.log("res");
     const response = await chain.call({
       input_documents: relevantDocs,
       question,
     });
-    console.log({ response });
-    return response.text;
+    return response;
   } catch (error: any) {
-    console.log("TEST LANGCHAIN");
     console.log(error);
   }
 }

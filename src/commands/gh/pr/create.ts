@@ -1,6 +1,7 @@
 import { Args, Command, Flags } from "@oclif/core";
 import { createPRDescription } from "../../../utils/langchain";
 import { getCommitDiffs } from "../../../utils/git/commit-diifs";
+const { exec } = require("child_process");
 
 export default class GhPrCreate extends Command {
   static description = "describe the command here";
@@ -23,7 +24,19 @@ export default class GhPrCreate extends Command {
       try {
         const gitDiff = await getCommitDiffs();
         const prDescription = await createPRDescription();
-        this.log("test");
+
+        exec(
+          `gh pr create --fill --title "Create PR from commits" --body "${
+            prDescription!.output_text
+          }"`,
+          (error: any, stdout: any, stderr: any) => {
+            if (error) {
+              console.error(`Error: ${error.message}`);
+              return;
+            }
+          }
+        );
+        this.log(prDescription!.output_text);
       } catch (error: any) {
         this.log(error);
       }

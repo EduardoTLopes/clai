@@ -3328,10 +3328,10 @@ keyv@^4.0.0:
   dependencies:
     json-buffer "3.0.1"
 
-langchain@^0.0.78:
-  version "0.0.78"
-  resolved "https://registry.yarnpkg.com/langchain/-/langchain-0.0.78.tgz#91211eb282452f2cd5a14b82ec02de345cc64ea8"
-  integrity sha512-AXoai3V1fJyQ2vDSS3KqRJr1VxRoAxX0L1sFeuXGvwyEzfzv6/dDKPJ7K1Onew3Jmfzu23t1qqhwsSMZOmwo7g==
+langchain@^0.0.84:
+  version "0.0.84"
+  resolved "https://registry.yarnpkg.com/langchain/-/langchain-0.0.84.tgz#fa9c6ed0641d90250438b3a46b66cedaded33996"
+  integrity sha512-7b7CIwHE1vB973wRRC0GmU9Jj2bt/xN5SA17VeoHa6zuNunawC2wFUfjQzNtSw+RHtMX0VHUjoBOqQCKGktbXQ==
   dependencies:
     "@anthropic-ai/sdk" "^0.4.3"
     ansi-styles "^5.0.0"

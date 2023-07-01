@@ -22,7 +22,7 @@
     "@oclif/plugin-plugins": "^2.4.7",
     "dotenv": "^16.0.3",
     "eslint-config-prettier": "^8.8.0",
-    "langchain": "^0.0.78"
+    "langchain": "^0.0.102"
   },
   "devDependencies": {
     "@oclif/test": "^2.3.20",
